@@ -22,7 +22,10 @@ public class Game {
     public void GameLoop() {
         Color colorToMove = Color.WHITE;
         boolean isCreatedPromotedPiece = false;
+        boolean isStalemate =false;
+
         board.setUpDefaultPosition();
+
         while (true) {
 
             renderer.render(board);
@@ -37,24 +40,30 @@ public class Game {
             Coordinates targetCoordinates = sourceAndTargetCoordinates.get(1);
             isCreatedPromotedPiece = false;
 
-            if((targetCoordinates.rank == 8 || targetCoordinates.rank == 1) && board.getPiece(sourceCoordinates) instanceof Pawn){
+            if ((targetCoordinates.rank == 8 || targetCoordinates.rank == 1) && board.getPiece(sourceCoordinates) instanceof Pawn) {
                 Piece promotedPiece = InputCoordinates.checkForValidInputPromotedPiece(targetCoordinates);
-                board.movePromotedPiece(sourceCoordinates,targetCoordinates ,promotedPiece);
+                board.movePromotedPiece(sourceCoordinates, targetCoordinates, promotedPiece);
                 isCreatedPromotedPiece = true;
-            }
-
-            else{
+            } else {
                 board.makeMove(sourceCoordinates, targetCoordinates);
             }
-//НАААААААААААААдо добавить логику для пада, тип когда для цвета который ходит нету хода то это пад, и мб поменять логику для королевы и остальных на ходы как в шашках(надо убрать коня так как его логика вообще не такая)
 
-            if(!board.isHavePieceWithColor(colorToMove.opposite())){
+            if (!board.isHavePiecesWithColor(colorToMove.opposite())) {
+                break;
+            } if (!board.isHaveMoveForColorPiece(colorToMove.opposite())) {
+                isStalemate = true;
                 break;
             }
+
             colorToMove = colorToMove.opposite();
         }
+
         renderer.render(board);
-        System.out.println("Game ended with state = " + colorToMove.toString().toLowerCase() + " WINNER WINNER CHICKEN DINNER!");
+        if (isStalemate) {
+            System.out.println("Game ended with state = Stalemate");
+        } else {
+            System.out.println("Game ended with state = " + colorToMove.toString().toLowerCase() + " WINNER WINNER CHICKEN DINNER!");
+        }
     }
 
 }
