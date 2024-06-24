@@ -15,7 +15,7 @@
 
 1. Склонируйте репозиторий:
     ```bash
-    git clone https://github.com/ваш-логин/ваш-репозиторий.git
+    git clone https://github.com/ssss1131/Checkers.git
     ```
 2. Перейдите в директорию с проектом:
     ```bash
